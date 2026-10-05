@@ -6,12 +6,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    # LLM
-    openai_api_key: str = ""
-    openai_base_url: str | None = None
-    llm_model: str = "gpt-4o-mini"
-    embedding_model: str = "text-embedding-3-small"
-    embedding_dim: int = 1536
+    # LLM (Google Gemini)
+    google_api_key: str = ""
+    llm_model: str = "gemini-2.5-flash"
+    embedding_model: str = "models/text-embedding-004"
+    embedding_dim: int = 768
 
     # Web search
     tavily_api_key: str = ""

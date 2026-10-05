@@ -1,15 +1,14 @@
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 
 from app.config import settings
 
 
-def get_llm(temperature: float = 0.2, streaming: bool = False) -> ChatOpenAI:
-    return ChatOpenAI(
+def get_llm(temperature: float = 0.2, streaming: bool = False) -> ChatGoogleGenerativeAI:
+    return ChatGoogleGenerativeAI(
         model=settings.llm_model,
-        api_key=settings.openai_api_key or None,
-        base_url=settings.openai_base_url,
+        google_api_key=settings.google_api_key or None,
         temperature=temperature,
-        streaming=streaming,
+        disable_streaming=not streaming,
         timeout=120,
         max_retries=2,
     )
@@ -20,9 +19,8 @@ def structured(schema, temperature: float = 0.0):
     return get_llm(temperature).with_structured_output(schema, method="function_calling")
 
 
-def get_embeddings() -> OpenAIEmbeddings:
-    return OpenAIEmbeddings(
+def get_embeddings() -> GoogleGenerativeAIEmbeddings:
+    return GoogleGenerativeAIEmbeddings(
         model=settings.embedding_model,
-        api_key=settings.openai_api_key or None,
-        base_url=settings.openai_base_url,
+        google_api_key=settings.google_api_key or None,
     )
